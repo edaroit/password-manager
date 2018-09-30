@@ -4,12 +4,12 @@ class NotesController < ApplicationController
   before_action :set_note, only: %i[show update destroy]
 
   def index
-    @notes = Note.all
+    @notes = current_user.notes.all
     json_response(@notes)
   end
 
   def create
-    @note = Note.create!(note_params)
+    @note = current_user.notes.create!(note_params)
     json_response(@note, :created)
   end
 
@@ -30,7 +30,7 @@ class NotesController < ApplicationController
   private
 
   def note_params
-    params.permit(:title, :content, :user_id)
+    params.permit(:title, :content)
   end
 
   def set_note

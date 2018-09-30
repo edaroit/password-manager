@@ -5,7 +5,7 @@ module V1
     before_action :set_login, only: %i[show update destroy]
 
     def index
-      @logins = current_user.logins
+      @logins = current_user.logins.paginate(page: params[:page], per_page: 20)
       json_response(@logins)
     end
 

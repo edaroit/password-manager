@@ -5,7 +5,7 @@ module V1
     before_action :set_note, only: %i[show update destroy]
 
     def index
-      @notes = current_user.notes.all
+      @notes = current_user.notes.paginate(page: params[:page], per_page: 20)
       json_response(@notes)
     end
 

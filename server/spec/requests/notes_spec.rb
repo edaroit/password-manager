@@ -6,9 +6,10 @@ RSpec.describe 'Notes API', type: :request do
   let!(:user) { create(:user) }
   let!(:notes) { create_list(:note, 10, user: user) }
   let(:note_id) { notes.first.id }
+  let(:headers) { valid_headers }
 
   describe 'GET /notes' do
-    before { get '/notes' }
+    before { get '/notes', params: {}, headers: headers }
 
     it 'returns notes' do
       expect(json).not_to be_empty
@@ -21,7 +22,7 @@ RSpec.describe 'Notes API', type: :request do
   end
 
   describe 'GET /notes/:id' do
-    before { get "/notes/#{note_id}" }
+    before { get "/notes/#{note_id}", params: {}, headers: headers }
 
     context 'when the record exists' do
       it 'returns the todo' do
@@ -53,7 +54,7 @@ RSpec.describe 'Notes API', type: :request do
     end
 
     context 'when the request is valid' do
-      before { post '/notes', params: valid_attributes }
+      before { post '/notes', params: valid_attributes, headers: headers }
 
       it 'creates a todo' do
         expect(json['title']).to eq('GitHub 2FA Keys')
@@ -66,7 +67,7 @@ RSpec.describe 'Notes API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/notes', params: {} }
+      before { post '/notes', params: {}, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -74,7 +75,7 @@ RSpec.describe 'Notes API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: User must exist/)
+          .to match(/Validation failed: Title can't be blank/)
       end
     end
   end
@@ -83,7 +84,9 @@ RSpec.describe 'Notes API', type: :request do
     let(:valid_attributes) { { title: 'Amazon Cupom' } }
 
     context 'when the record exists' do
-      before { put "/notes/#{note_id}", params: valid_attributes }
+      before do
+        put "/notes/#{note_id}", params: valid_attributes, headers: headers
+      end
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -96,7 +99,7 @@ RSpec.describe 'Notes API', type: :request do
   end
 
   describe 'DELETE /notes/:id' do
-    before { delete "/notes/#{note_id}" }
+    before { delete "/notes/#{note_id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -4,12 +4,12 @@ class LoginsController < ApplicationController
   before_action :set_login, only: %i[show update destroy]
 
   def index
-    @logins = Login.all
+    @logins = current_user.logins
     json_response(@logins)
   end
 
   def create
-    @login = Login.create!(login_params)
+    @login = current_user.logins.create!(login_params)
     json_response(@login, :created)
   end
 
@@ -30,7 +30,7 @@ class LoginsController < ApplicationController
   private
 
   def login_params
-    params.permit(:username, :password, :site, :user_id)
+    params.permit(:username, :password, :site)
   end
 
   def set_login

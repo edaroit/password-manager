@@ -6,9 +6,10 @@ RSpec.describe 'Logins API', type: :request do
   let!(:user) { create(:user) }
   let!(:logins) { create_list(:login, 10, user: user) }
   let(:login_id) { logins.first.id }
+  let(:headers) { valid_headers }
 
   describe 'GET /logins' do
-    before { get '/logins' }
+    before { get '/logins', params: {}, headers: headers }
 
     it 'returns logins' do
       expect(json).not_to be_empty
@@ -21,7 +22,7 @@ RSpec.describe 'Logins API', type: :request do
   end
 
   describe 'GET /logins/:id' do
-    before { get "/logins/#{login_id}" }
+    before { get "/logins/#{login_id}", params: {}, headers: headers }
 
     context 'when the record exists' do
       it 'returns the todo' do
@@ -54,7 +55,7 @@ RSpec.describe 'Logins API', type: :request do
     end
 
     context 'when the request is valid' do
-      before { post '/logins', params: valid_attributes }
+      before { post '/logins', params: valid_attributes, headers: headers }
 
       it 'creates a todo' do
         expect(json['username']).to eq('test@spec')
@@ -68,7 +69,7 @@ RSpec.describe 'Logins API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/logins', params: {} }
+      before { post '/logins', params: {}, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -76,7 +77,7 @@ RSpec.describe 'Logins API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: User must exist/)
+          .to match(/Validation failed: Username can't be blank/)
       end
     end
   end
@@ -85,7 +86,9 @@ RSpec.describe 'Logins API', type: :request do
     let(:valid_attributes) { { password: '5tr0ngPWD' } }
 
     context 'when the record exists' do
-      before { put "/logins/#{login_id}", params: valid_attributes }
+      before do
+        put "/logins/#{login_id}", params: valid_attributes, headers: headers
+      end
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -98,7 +101,7 @@ RSpec.describe 'Logins API', type: :request do
   end
 
   describe 'DELETE /logins/:id' do
-    before { delete "/logins/#{login_id}" }
+    before { delete "/logins/#{login_id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

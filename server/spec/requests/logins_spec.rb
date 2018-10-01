@@ -50,8 +50,7 @@ RSpec.describe 'Logins API', type: :request do
 
   describe 'POST /logins' do
     let(:valid_attributes) do
-      { username: 'test@spec', password: 's3cretss', site: 'test.spec',
-        user_id: user.id }
+      { username: 'test@spec', password: 's3cretss', site: 'test.spec' }
     end
 
     context 'when the request is valid' do

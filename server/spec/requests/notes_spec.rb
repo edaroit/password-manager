@@ -50,7 +50,7 @@ RSpec.describe 'Notes API', type: :request do
 
   describe 'POST /notes' do
     let(:valid_attributes) do
-      { title: 'GitHub 2FA Keys', content: 'GitHub Keys', user_id: user.id }
+      { title: 'GitHub 2FA Keys', content: 'GitHub Keys' }
     end
 
     context 'when the request is valid' do

@@ -16,6 +16,7 @@ class ApiVersion
 
   def check_headers(headers)
     accept = headers[:accept]
-    accept&.include?("application/vnd.todos.#{version}+json")
+    accept&.include?("application/vnd.logins.#{version}+json") ||
+    accept&.include?("application/vnd.notes.#{version}+json")
   end
 end

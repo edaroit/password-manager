@@ -25,7 +25,7 @@ RSpec.describe 'Logins API', type: :request do
     before { get "/logins/#{login_id}", params: {}, headers: headers }
 
     context 'when the record exists' do
-      it 'returns the todo' do
+      it 'returns the login' do
         expect(json).not_to be_empty
         expect(json['id']).to eq(login_id)
       end
@@ -57,7 +57,7 @@ RSpec.describe 'Logins API', type: :request do
     context 'when the request is valid' do
       before { post '/logins', params: valid_attributes, headers: headers }
 
-      it 'creates a todo' do
+      it 'creates a login' do
         expect(json['username']).to eq('test@spec')
         expect(json['password']).to eq('s3cretss')
         expect(json['site']).to eq('test.spec')

@@ -25,7 +25,7 @@ RSpec.describe 'Notes API', type: :request do
     before { get "/notes/#{note_id}", params: {}, headers: headers }
 
     context 'when the record exists' do
-      it 'returns the todo' do
+      it 'returns the note' do
         expect(json).not_to be_empty
         expect(json['id']).to eq(note_id)
       end
@@ -56,7 +56,7 @@ RSpec.describe 'Notes API', type: :request do
     context 'when the request is valid' do
       before { post '/notes', params: valid_attributes, headers: headers }
 
-      it 'creates a todo' do
+      it 'creates a note' do
         expect(json['title']).to eq('GitHub 2FA Keys')
         expect(json['content']).to eq('GitHub Keys')
       end

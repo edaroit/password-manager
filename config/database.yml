@@ -11,3 +11,5 @@ development:
 test:
   <<: *default
   database: password_manager_test
+  username: password_manager
+  password: ""

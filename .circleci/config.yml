@@ -1,0 +1,41 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/password-manager
+    docker:
+      - image: circleci/ruby:2.5.0
+        environment:
+          PGHOST: localhost
+          PGUSER: postgres
+          RAILS_ENV: test
+      - image: postgres:9.5
+        environment:
+          POSTGRES_DB: password_manager_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+    steps:
+      - checkout
+
+      # Restore Cached Dependencies
+      - type: cache-restore
+        name: Restore bundle cache
+        key: password-manager-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
+
+      # Cache Dependencies
+      - type: cache-save
+        name: Store bundle cache
+        key: password-manager-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Wait for DB
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      # Setup the database
+      - run: bundle exec rails db:setup
+
+      # Run the tests
+      - run: bundle exec rspec

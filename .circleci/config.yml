@@ -16,26 +16,28 @@ jobs:
     steps:
       - checkout
 
-      # Restore Cached Dependencies
       - type: cache-restore
-        name: Restore bundle cache
+        name: Restore Bundle Cache
         key: password-manager-{{ checksum "Gemfile.lock" }}
 
-      # Bundle install dependencies
-      - run: bundle install --path vendor/bundle
+      - run:
+          name: Install Dependecies
+          command: bundle install --path vendor/bundle
 
-      # Cache Dependencies
       - type: cache-save
-        name: Store bundle cache
+        name: Store Bundle Cache
         key: password-manager-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
 
-      # Wait for DB
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
-      # Setup the database
-      - run: bundle exec rails db:setup
+      - run:
+          name: Setup Database
+          command: bundle exec rails db:setup
 
-      # Run the tests
-      - run: bundle exec rspec
+      - run:
+          name: Run Tests
+          command: bundle exec rspec

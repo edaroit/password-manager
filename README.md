@@ -1,24 +1,34 @@
-# README
+# Password Manager
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple Password Manager REST API.
 
-Things you may want to cover:
+Ruby Version: `2.5.0`
 
-* Ruby version
+---
 
-* System dependencies
+### Install Dependecies
+```
+bundle install
+```
 
-* Configuration
+---
 
-* Database creation
+### Setup Database
+```
+bundle exec rails db:create
+bundle exec rails db:migrate
+```
 
-* Database initialization
+---
 
-* How to run the test suite
+### Run Tests
+```
+bundle exec rspec
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+---
 
-* Deployment instructions
-
-* ...
+### Run Server
+```
+bundle exec rails server
+```

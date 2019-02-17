@@ -1,0 +1,77 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/password-manager
+    docker:
+      - image: circleci/ruby:2.5.0
+    steps:
+      - checkout
+
+      - type: cache-restore
+        name: Restore Bundle Cache
+        key: password-manager-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Dependecies
+          command: bundle install --path vendor/bundle
+
+      - type: cache-save
+        name: Store Bundle Cache
+        key: password-manager-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+  
+  test:
+    working_directory: ~/password-manager
+    docker:
+      - image: circleci/ruby:2.5.0
+        environment:
+          PGHOST: localhost
+          PGUSER: postgres
+          RAILS_ENV: test
+      - image: postgres:9.5
+        environment:
+          POSTGRES_DB: password_manager_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+    steps:
+      - checkout
+
+      - type: cache-restore
+        name: Restore Bundle Cache
+        key: password-manager-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Dependecies
+          command: bundle install --path vendor/bundle
+
+      - type: cache-save
+        name: Store Bundle Cache
+        key: password-manager-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Setup Database
+          command: bundle exec rails db:setup
+
+      - run:
+          name: Run Tests
+          command: bundle exec rspec
+
+      - run:
+          name: Run Linter
+          command: bundle exec rubocop
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build

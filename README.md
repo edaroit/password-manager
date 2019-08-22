@@ -2,7 +2,7 @@
 
 A simple Password Manager REST API.
 
-Ruby Version: `2.5.0`
+Ruby Version: `2.6.2`
 
 ---
 

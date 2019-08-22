@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/password-manager
     docker:
-      - image: circleci/ruby:2.5.0
+      - image: circleci/ruby:2.6.2
     steps:
       - checkout
 
@@ -13,18 +13,20 @@ jobs:
 
       - run:
           name: Install Dependecies
-          command: bundle install --path vendor/bundle
+          command: |
+            gem install bundler:2.0.1
+            bundle install --path vendor/bundle
 
       - type: cache-save
         name: Store Bundle Cache
         key: password-manager-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
-  
+
   test:
     working_directory: ~/password-manager
     docker:
-      - image: circleci/ruby:2.5.0
+      - image: circleci/ruby:2.6.2
         environment:
           PGHOST: localhost
           PGUSER: postgres
@@ -43,7 +45,9 @@ jobs:
 
       - run:
           name: Install Dependecies
-          command: bundle install --path vendor/bundle
+          command: |
+            gem install bundler:2.0.1
+            bundle install --path vendor/bundle
 
       - type: cache-save
         name: Store Bundle Cache

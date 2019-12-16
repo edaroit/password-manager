@@ -9,7 +9,7 @@ gem 'rails', '~> 5.2.3'
 gem 'pg'
 
 # App server
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 
 # Password encryption
 gem 'bcrypt', '~> 3.1.7'

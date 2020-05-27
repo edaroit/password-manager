@@ -12,14 +12,14 @@ AllCops:
     - 'config.ru'
   TargetRubyVersion: 2.5
 
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: always
-
-Style/Documentation:
-  Enabled: false
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
 
 Layout/EndOfLine:
   EnforcedStyle: lf
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
 
 Layout/TrailingWhitespace:
   AllowInHeredoc: true
@@ -27,6 +27,15 @@ Layout/TrailingWhitespace:
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*.rb'
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
 
 Metrics/BlockLength:
   Exclude:
@@ -37,3 +46,24 @@ Metrics/BlockLength:
 Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
